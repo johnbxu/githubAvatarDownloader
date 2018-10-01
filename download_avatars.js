@@ -5,6 +5,20 @@ const fs = require('fs');
 const args = process.argv.slice(2);
 
 
+// checks if .env file exists
+if (!fs.existsSync('./.env')) {
+  console.log('.env file does not exist. Exiting...');
+  process.exit();
+}
+
+// checks if token exists in .env
+fs.readFile('./.env', function (err, data) {
+  if (err) throw err;
+  if(data.indexOf('GITHUB_TOKEN') === -1){
+    console.log('missing authorization token');
+    process.exit();
+  }
+});
 
 // exists process if not 2 arguments
 if (args.length !== 2) {
@@ -55,11 +69,12 @@ function downloadImageByURL(url, filePath) {
 // function to call and download all images
 getRepoContributors(args[0], args[1], function(err, result) {
   console.log("Errors:", err);
+  // if Repo or Owner doesn't exist, result will contain an error message. In this case, exit process
   if (result.message == 'Not Found') {
     console.log('Repo or Owner does not exist');
     process.exit();
   }
   for (contributor of result) {
-    downloadImageByURL(contributor.avatar_url, `avatars/${contributor.login}`)
+    downloadImageByURL(contributor.avatar_url, `avatars/${contributor.login}`);
   }
 });
