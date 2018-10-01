@@ -25,7 +25,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
   };
   request(options, function(err, res, body) {
     let parsedList = JSON.parse(body);
-    console.log(parsedList);
     cb(err, parsedList);
   });
 }
@@ -56,7 +55,11 @@ function downloadImageByURL(url, filePath) {
 // function to call and download all images
 getRepoContributors(args[0], args[1], function(err, result) {
   console.log("Errors:", err);
+  if (result.message == 'Not Found') {
+    console.log('Repo or Owner does not exist');
+    process.exit();
+  }
   for (contributor of result) {
-    downloadImageByURL(contributor.avatar_url, `avatars/test/${contributor.login}`)
+    downloadImageByURL(contributor.avatar_url, `avatars/${contributor.login}`)
   }
 });
