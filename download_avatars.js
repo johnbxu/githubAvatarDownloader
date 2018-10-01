@@ -1,6 +1,5 @@
 // imports
 const request = require('request');
-const token = require('./secrets.js');
 const fs = require('fs');
 const args = process.argv.slice(2);
 
@@ -18,7 +17,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`,
     headers: {
       'User-Agent': 'request',
-      'Authentication': token,
+      'Authentication': process.env.GITHUB_TOKEN,
     },
   };
   request(options, function(err, res, body) {
@@ -34,7 +33,7 @@ function downloadImageByURL(url, filePath) {
     url: `${url}`,
     headers: {
       'User-Agent': 'request',
-      'Authentication': token,
+      'Authentication': process.env.GITHUB_TOKEN,
     },
   };
   request.get(options.url)
