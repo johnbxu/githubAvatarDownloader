@@ -19,6 +19,7 @@
   "homepage": "https://github.com/johnbxu/githubAvatarDownloader#readme",
   "dependencies": {
     "dotenv": "^6.0.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "sleep": "^5.2.3"
   }
 }
