@@ -1,8 +1,10 @@
-let request = require('request');
-let token = require('./secrets.js');
-let fs = require('fs');
+// imports
+const request = require('request');
+const token = require('./secrets.js');
+const fs = require('fs');
 const args = process.argv.slice(2);
 
+// exists process if not 2 arguments
 if (args.length !== 2) {
   console.log("please pass 2 arguments");
   process.exit();
@@ -10,16 +12,15 @@ if (args.length !== 2) {
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
+// function to get list of contributors; calls callback function with an array of objects
 function getRepoContributors(repoOwner, repoName, cb) {
   let options = {
     url: `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`,
-    // url: `https://github.com/lighthouse-labs/promises-exercises`,
     headers: {
       'User-Agent': 'request',
       'Authentication': token,
     },
   };
-
   request(options, function(err, res, body) {
     let parsedList = JSON.parse(body);
     console.log(parsedList);
@@ -27,14 +28,13 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
+// function to get images using an URL
 function downloadImageByURL(url, filePath) {
   let options = {
     url: `${url}`,
-    // url: `https://github.com/lighthouse-labs/promises-exercises`,
     headers: {
       'User-Agent': 'request',
       'Authentication': token,
-
     },
   };
   request.get(options.url)
@@ -47,9 +47,9 @@ function downloadImageByURL(url, filePath) {
     .pipe(fs.createWriteStream(filePath));
 }
 
+// function to call and download all images
 getRepoContributors(args[0], args[1], function(err, result) {
   console.log("Errors:", err);
-
   for (contributor of result) {
     downloadImageByURL(contributor.avatar_url, `avatars/${contributor.login}`)
   }
