@@ -4,6 +4,8 @@ const request = require('request');
 const fs = require('fs');
 const args = process.argv.slice(2);
 
+
+
 // exists process if not 2 arguments
 if (args.length !== 2) {
   console.log("please pass 2 arguments");
@@ -18,7 +20,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`,
     headers: {
       'User-Agent': 'request',
-      'Authentication': process.env.GITHUB_TOKEN,
+      'Authorization': 'token ' + process.env.GITHUB_TOKEN,
     },
   };
   request(options, function(err, res, body) {
@@ -30,11 +32,15 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 // function to get images using an URL
 function downloadImageByURL(url, filePath) {
+  if (!fs.existsSync(filePath)) {
+    console.log('this path for saving the files does not exist');
+    process.exit();
+  }
   let options = {
     url: `${url}`,
     headers: {
       'User-Agent': 'request',
-      'Authentication': process.env.GITHUB_TOKEN,
+      'Authorization': 'token ' + process.env.GITHUB_TOKEN,
     },
   };
   request.get(options.url)
@@ -51,6 +57,6 @@ function downloadImageByURL(url, filePath) {
 getRepoContributors(args[0], args[1], function(err, result) {
   console.log("Errors:", err);
   for (contributor of result) {
-    downloadImageByURL(contributor.avatar_url, `avatars/${contributor.login}`)
+    downloadImageByURL(contributor.avatar_url, `avatars/test/${contributor.login}`)
   }
 });
