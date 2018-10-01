@@ -74,6 +74,11 @@ getRepoContributors(args[0], args[1], function(err, result) {
     console.log('Repo or Owner does not exist');
     process.exit();
   }
+  // if credentials are incorrect, exists process
+  if (result.message == 'Bad credentials') {
+    console.log('Incorrect credentials');
+    process.exit();
+  }
   for (contributor of result) {
     downloadImageByURL(contributor.avatar_url, `avatars/${contributor.login}`);
   }
