@@ -1,0 +1,23 @@
+{
+  "name": "githubAvatarDownloader",
+  "version": "1.0.0",
+  "description": "## Problem Statement",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnbxu/githubAvatarDownloader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnbxu/githubAvatarDownloader/issues"
+  },
+  "homepage": "https://github.com/johnbxu/githubAvatarDownloader#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
