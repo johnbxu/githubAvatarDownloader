@@ -29,7 +29,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 // should list all the starred repos
-function getRepoStarred(url, cb) {
+function getRepoStarred(url) {
   let options = {
     url: url,
     headers: {
@@ -46,6 +46,9 @@ function getRepoStarred(url, cb) {
       } else {
         output[starredRepos[i].full_name] += 1;
       };
+    }
+    if (output.count === starredRepos.length) {
+      console.log(output);
     }
   });
 }
