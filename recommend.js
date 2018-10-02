@@ -5,9 +5,9 @@ const fs = require('fs');
 const args = process.argv.slice(2);
 const sleep = require('sleep');
 
-let output = {
-  count: 0,
-};
+let output = {};
+let outputArr = [];
+let count = 0;
 
 let maxCount;
 
@@ -39,7 +39,7 @@ function getRepoStarred(url) {
   };
   request(options, function(err, res, body) {
     let starredRepos = JSON.parse(body);
-    output.count += 1;
+    count += 1;
     for (let i = 0; i < starredRepos.length; i++) {
       if (!output[starredRepos[i].full_name]) {
         output[starredRepos[i].full_name] = 1;
@@ -47,8 +47,10 @@ function getRepoStarred(url) {
         output[starredRepos[i].full_name] += 1;
       };
     }
-    if (output.count === starredRepos.length) {
-      console.log(output);
+    if (count === starredRepos.length) {
+      // console.log(output);
+      pickTopFive(output);
+
     }
   });
 }
@@ -67,4 +69,15 @@ getRepoContributors(args[0], args[1], function(err, result) {
   }
 });
 
-
+// pick top 5
+function pickTopFive (obj) {
+  for (const key in obj) {
+    outputArr.push([key, obj[key]]);
+  }
+  const sorted = outputArr.sort((a,b) => {
+    return b[1] - a[1];
+  });
+  for (let i = 0; i < 5; i += 1) {
+    console.log(outputArr[i]);
+  }
+}
